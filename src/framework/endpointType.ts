@@ -1,10 +1,12 @@
+import { ServerResponse } from 'http';
+
 import RequestMethods from './requestMethods';
 
 interface ObjectKey {
-  [RequestMethods.GET]?: () => void;
-  [RequestMethods.POST]?: () => void;
-  [RequestMethods.PUT]?: () => void;
-  [RequestMethods.DELETE]?: () => void;
+  [RequestMethods.GET]?: (req: any, res: ServerResponse) => void;
+  [RequestMethods.POST]?: (req: any, res: ServerResponse) => void;
+  [RequestMethods.PUT]?: (req: any, res: ServerResponse) => void;
+  [RequestMethods.DELETE]?: (req: any, res: ServerResponse) => void;
 }
 
 interface Endpoint {

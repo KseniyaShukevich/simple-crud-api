@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 
 import Router from './Router';
 import { getRouteMask } from './helpers';
+import RequestMethods from './requestMethods';
 
 class Application {
   emitter: EventEmitter;
@@ -23,10 +24,12 @@ class Application {
       const endpoint = router.endpoints[path];
 
       Object.keys(endpoint).forEach((method) => {
-        const handler = endpoint[method];
+        const handler = endpoint[method as RequestMethods];
 
         this.emitter.on(getRouteMask(path, method), (req, res) => {
-          handler(req, res);
+          if (handler) {
+            handler(req, res);
+          }
         });
       });
     });

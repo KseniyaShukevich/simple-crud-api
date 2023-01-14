@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { ServerResponse } from 'http';
 
 import Application from './framework/Application';
 import Router from './framework/Router';
@@ -11,11 +12,11 @@ const app = new Application();
 
 const router = new Router();
 
-router.get('/users', (req, res) => {
+router.get('/users', (req: any, res: ServerResponse) => {
   res.end('USERS');
 });
 
-router.get('/posts', (req, res) => {
+router.get('/posts', (req: any, res: ServerResponse) => {
   res.end('POSTS');
 });
 

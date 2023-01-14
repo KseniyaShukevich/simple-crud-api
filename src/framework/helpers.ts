@@ -1,4 +1,6 @@
-const getRouteMask = (path?: string, method?: string): string => `[${path}]:[${method}]`;
+import RequestMethods from './requestMethods';
+
+const getRouteMask = (path?: string, method?: RequestMethods | string): string => `[${path}]:[${method}]`;
 
 export {
   getRouteMask,

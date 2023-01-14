@@ -6,7 +6,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.ts?$/,
+        test: /\.ts$/,
         use: 'ts-loader',
         include: [path.resolve(process.cwd(), 'src')],
         exclude: [
