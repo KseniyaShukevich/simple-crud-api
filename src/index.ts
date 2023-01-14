@@ -1,9 +1,26 @@
 import dotenv from 'dotenv';
-import fs from 'fs';
+
+import Application from './framework/Application';
+import Router from './framework/Router';
 
 dotenv.config();
 
-console.log('Hey!');
-console.log(process.env.PORT);
+const PORT = process.env.PORT || 3000;
 
-fs;
+const app = new Application();
+
+const router = new Router();
+
+router.get('/users', (req, res) => {
+  res.end('USERS');
+});
+
+router.get('/posts', (req, res) => {
+  res.end('POSTS');
+});
+
+app.addRouter(router);
+
+app.listen(Number(PORT), () => {
+  console.log(`Server started on PORT ${PORT}`);
+});

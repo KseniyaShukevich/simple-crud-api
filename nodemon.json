@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": "ts,json",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "ts-node" 
+  "exec": "ts-node --experimental-specifier-resolution=node" 
 }
