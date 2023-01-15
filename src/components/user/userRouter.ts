@@ -1,39 +1,18 @@
-import ServerResponseType from '../../framework/ServerResponseType';
-import RequestType from '../../framework/RequestType';
-
 import Router from '../../framework/Router';
+import {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+} from './userController';
 
 const router = new Router();
 
-const users = [
-  { name: 'Name1' },
-  { name: 'Name2' },
-];
-
-router.get('/users', (req: RequestType, res: ServerResponseType) => {
-  res.send(200, users);
-});
-
-router.get('/users/:id', (req: RequestType, res: ServerResponseType) => {
-  console.log('ID: ', req.id);
-  res.send(200, users[0]);
-});
-
-router.post('/users', (req: RequestType, res: ServerResponseType) => {
-  const user = req.body;
-
-  users.push(user);
-  res.send(200, user);
-});
-
-router.put('/users/:id', (req: RequestType, res: ServerResponseType) => {
-  console.log('ID: ', req.id);
-  res.send(200, { name: 'PUT' });
-});
-
-router.delete('/users/:id', (req: RequestType, res: ServerResponseType) => {
-  console.log('ID: ', req.id);
-  res.send(200, { name: 'DELETE' });
-});
+router.get('/users', getUsers);
+router.get('/users/:id', getUserById);
+router.post('/users', createUser);
+router.put('/users/:id', updateUser);
+router.delete('/users/:id', deleteUser);
 
 export default router;
