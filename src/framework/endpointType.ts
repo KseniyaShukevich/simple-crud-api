@@ -2,15 +2,21 @@ import ServerResponseType from './ServerResponseType';
 import RequestType from './RequestType';
 import RequestMethods from './requestMethods';
 
-interface ObjectKey {
-  [RequestMethods.GET]?: (req: RequestType, res: ServerResponseType) => void;
-  [RequestMethods.POST]?: (req: RequestType, res: ServerResponseType) => void;
-  [RequestMethods.PUT]?: (req: RequestType, res: ServerResponseType) => void;
-  [RequestMethods.DELETE]?: (req: RequestType, res: ServerResponseType) => void;
+type HandlerEndpointType = (req: RequestType, res: ServerResponseType) => void;
+
+interface EndpointType {
+  [RequestMethods.GET]?: HandlerEndpointType;
+  [RequestMethods.POST]?: HandlerEndpointType;
+  [RequestMethods.PUT]?: HandlerEndpointType;
+  [RequestMethods.DELETE]?: HandlerEndpointType;
 }
 
-interface Endpoint {
-  [key: string]: ObjectKey;
+interface EndpointsType {
+  [key: string]: EndpointType;
 }
 
-export default Endpoint;
+export default EndpointsType;
+
+export {
+  EndpointType,
+};

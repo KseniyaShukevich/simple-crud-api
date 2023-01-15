@@ -1,10 +1,10 @@
 import ServerResponseType from './ServerResponseType';
 import RequestType from './RequestType';
 import RequestMethods from './requestMethods';
-import Endpoint from './endpointType';
+import EndpointsType from './endpointType';
 
 class Router {
-  endpoints: Endpoint;
+  endpoints: EndpointsType;
 
   constructor() {
     this.endpoints = {};

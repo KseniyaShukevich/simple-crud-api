@@ -7,6 +7,8 @@ import RequestMethods from './requestMethods';
 import Middleware from './middlewares/middlewareType';
 import RequestType from './RequestType';
 import ServerResponseType from './ServerResponseType';
+import { EndpointType } from './endpointType';
+import { handleUncaughtException } from './errors/handleErrors';
 
 class Application {
   emitter: EventEmitter;
@@ -22,7 +24,11 @@ class Application {
   }
 
   public listen(port: number, callback: () => void) {
-    this.server.listen(port, callback);
+    this.server?.listen(port, callback);
+  }
+
+  public use(middleware: Middleware) {
+    this.middlewares.push(middleware);
   }
 
   public addRouter(router: Router) {
@@ -30,19 +36,24 @@ class Application {
       const endpoint = router.endpoints[path];
 
       Object.keys(endpoint).forEach((method) => {
-        const handler = endpoint[method as RequestMethods];
-
-        this.emitter.on(getRouteMask(path, method), (req, res) => {
-          if (handler) {
-            handler(req, res);
-          }
-        });
+        this.addEmitterForMethod(endpoint, path, method as RequestMethods);
       });
     });
   }
 
-  public use(middleware: Middleware) {
-    this.middlewares.push(middleware);
+  private addEmitterForMethod(endpoint: EndpointType, path: string, method: RequestMethods) {
+    const events = this.emitter.eventNames();
+    const routeMask = getRouteMask(path, method);
+
+    if (!events.includes(routeMask)) {
+      const handler = endpoint[method as RequestMethods];
+
+      this.emitter.on(routeMask, (req, res) => {
+        if (handler) {
+          handler(req, res);
+        }
+      });
+    }
   }
 
   private createServer() {
@@ -57,9 +68,11 @@ class Application {
         const emitted = this.emitter.emit(routeMask, req, res);
 
         if (!emitted) {
-          (res as ServerResponseType).send(404, "This endpoint doesn't exist");
+          (res as ServerResponseType).send(404, "This router doesn't exist.");
         }
       });
+
+      handleUncaughtException(res as ServerResponseType);
     });
 
     return server;
