@@ -1,4 +1,4 @@
-class InMemoryDatabase<T> {
+class InMemoryStorage<T> {
   private items: Array<T> = [];
 
   public async getAll(): Promise<Array<T>> {
@@ -36,4 +36,4 @@ class InMemoryDatabase<T> {
   }
 };
 
-export default InMemoryDatabase;
+export default InMemoryStorage;
