@@ -1,5 +1,5 @@
-import { ServerResponse } from 'http';
-
+import ServerResponseType from './ServerResponseType';
+import RequestType from './RequestType';
 import RequestMethods from './requestMethods';
 import Endpoint from './endpointType';
 
@@ -10,7 +10,11 @@ class Router {
     this.endpoints = {};
   }
 
-  request(method: RequestMethods, path: string, handler: (req: any, res: ServerResponse) => void) {
+  request(
+    method: RequestMethods,
+    path: string,
+    handler: (req: RequestType, res: ServerResponseType) => void,
+  ) {
     const currentEndpoint = this.endpoints[path];
 
     if (!currentEndpoint) {
@@ -26,19 +30,19 @@ class Router {
     this.endpoints[path][method] = handler;
   }
 
-  get(path: string, handler: (req: any, res: ServerResponse) => void) {
+  get(path: string, handler: (req: RequestType, res: ServerResponseType) => void) {
     this.request(RequestMethods.GET, path, handler);
   }
 
-  post(path: string, handler: (req: any, res: ServerResponse) => void) {
+  post(path: string, handler: (req: RequestType, res: ServerResponseType) => void) {
     this.request(RequestMethods.POST, path, handler);
   }
 
-  put(path: string, handler: (req: any, res: ServerResponse) => void) {
+  put(path: string, handler: (req: RequestType, res: ServerResponseType) => void) {
     this.request(RequestMethods.PUT, path, handler);
   }
 
-  delete(path: string, handler: (req: any, res: ServerResponse) => void) {
+  delete(path: string, handler: (req: RequestType, res: ServerResponseType) => void) {
     this.request(RequestMethods.DELETE, path, handler);
   }
 }

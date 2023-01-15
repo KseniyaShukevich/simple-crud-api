@@ -4,22 +4,28 @@ import EventEmitter from 'events';
 import Router from './Router';
 import { getRouteMask } from './helpers';
 import RequestMethods from './requestMethods';
+import Middleware from './middlewares/middlewareType';
+import RequestType from './RequestType';
+import ServerResponseType from './ServerResponseType';
 
 class Application {
   emitter: EventEmitter;
 
   server: Server;
 
+  middlewares: Array<Middleware>;
+
   constructor() {
     this.emitter = new EventEmitter();
     this.server = this.createServer();
+    this.middlewares = [];
   }
 
-  listen(port: number, callback: () => void) {
+  public listen(port: number, callback: () => void) {
     this.server.listen(port, callback);
   }
 
-  addRouter(router: Router) {
+  public addRouter(router: Router) {
     Object.keys(router.endpoints).forEach((path) => {
       const endpoint = router.endpoints[path];
 
@@ -35,14 +41,25 @@ class Application {
     });
   }
 
+  public use(middleware: Middleware) {
+    this.middlewares.push(middleware);
+  }
+
   private createServer() {
     const server = http.createServer((req, res) => {
       const routeMask = getRouteMask(req.url, req.method);
-      const emitted = this.emitter.emit(routeMask, req, res);
 
-      if (!emitted) {
-        res.end();
-      }
+      this.middlewares.forEach(
+        (middleware) => middleware(req as RequestType, res as ServerResponseType),
+      );
+
+      req.on('end', () => {
+        const emitted = this.emitter.emit(routeMask, req, res);
+
+        if (!emitted) {
+          res.end();
+        }
+      });
     });
 
     return server;
