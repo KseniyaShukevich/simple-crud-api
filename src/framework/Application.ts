@@ -57,7 +57,7 @@ class Application {
         const emitted = this.emitter.emit(routeMask, req, res);
 
         if (!emitted) {
-          res.end();
+          (res as ServerResponseType).send(404, "This endpoint doesn't exist");
         }
       });
     });

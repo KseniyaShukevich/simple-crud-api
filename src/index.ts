@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
-import { ServerResponse } from 'http';
 
 import Application from './framework/Application';
-import Router from './framework/Router';
+import userRouter from './components/user/userRouter';
+import jsonParser from './framework/middlewares/jsonParser';
+import bodyParser from './framework/middlewares/bodyParser';
+import urlParser from './framework/middlewares/urlParser';
 
 dotenv.config();
 
@@ -10,17 +12,11 @@ const PORT = process.env.PORT || 3000;
 
 const app = new Application();
 
-const router = new Router();
+app.use(jsonParser);
+app.use(bodyParser);
+app.use(urlParser);
 
-router.get('/users', (req: any, res: ServerResponse) => {
-  res.end('USERS');
-});
-
-router.get('/posts', (req: any, res: ServerResponse) => {
-  res.end('POSTS');
-});
-
-app.addRouter(router);
+app.addRouter(userRouter);
 
 app.listen(Number(PORT), () => {
   console.log(`Server started on PORT ${PORT}`);

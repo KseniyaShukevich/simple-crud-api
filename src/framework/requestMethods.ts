@@ -2,7 +2,7 @@ enum RequestMethods {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
-  DELETE = 'DELTE',
+  DELETE = 'DELETE',
 }
 
 export default RequestMethods;
