@@ -7,7 +7,7 @@ import RequestMethods from './requestMethods';
 import Middleware from './middlewares/middlewareType';
 import RequestType from './RequestType';
 import ServerResponseType from './ServerResponseType';
-import { EndpointType } from './endpointType';
+import { EndpointType } from './EndpointType';
 import { handleUncaughtException } from './errors/handleErrors';
 
 class Application {

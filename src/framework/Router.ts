@@ -1,7 +1,7 @@
 import ServerResponseType from './ServerResponseType';
 import RequestType from './RequestType';
 import RequestMethods from './requestMethods';
-import EndpointsType from './endpointType';
+import EndpointsType from './EndpointType';
 
 class Router {
   endpoints: EndpointsType;
