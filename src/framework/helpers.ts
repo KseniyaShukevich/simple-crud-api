@@ -5,9 +5,9 @@ const getRouteMask = (path?: string, method?: RequestMethods | string): string =
   let newPath: string | undefined = '';
 
   if (parsedUrl) {
-    const [, route, id] = parsedUrl;
+    const [,, route, id] = parsedUrl;
 
-    newPath = id ? `/${route}/:id` : `/${route}/`;
+    newPath = id ? `/api/${route}/:id` : `/api/${route}/`;
   }
 
   return `[${newPath}]:[${method}]`;

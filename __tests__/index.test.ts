@@ -24,12 +24,14 @@ beforeEach(() => {
   userRepository.clear();
 });
 
+const API_URL = '/api/users';
+
 describe('User router', () => {
   describe('Scenario 1: get all users', () => {
     let response: Response;
 
     beforeEach(async () => {
-      response = await serverWrapped.get('/users');
+      response = await serverWrapped.get(API_URL);
     });
 
     it(`Response status ${ResponseStatus.OK}`, () => {
@@ -52,7 +54,7 @@ describe('User router', () => {
         hobbies: ['hobby1', 'hobby2'],
       };
 
-      const createdUserResponse = await serverWrapped.post('/users').send(createUserDto);
+      const createdUserResponse = await serverWrapped.post(API_URL).send(createUserDto);
 
       id = createdUserResponse.body.id;
     });
@@ -61,7 +63,7 @@ describe('User router', () => {
       let response: Response;
 
       beforeEach(async () => {
-        response = await serverWrapped.get(`/users/${id}`);
+        response = await serverWrapped.get(`${API_URL}/${id}`);
       });
 
       it(`Response status ${ResponseStatus.OK}`, async () => {
@@ -77,7 +79,7 @@ describe('User router', () => {
       let response: Response;
 
       beforeEach(async () => {
-        response = await serverWrapped.delete(`/users/${id}`);
+        response = await serverWrapped.delete(`${API_URL}/${id}`);
       });
 
       it(`Response status ${ResponseStatus.DELETED}`, async () => {
@@ -96,7 +98,7 @@ describe('User router', () => {
           hobbies: [],
         }
 
-        response = await serverWrapped.put(`/users/${id}`).send(newUserDto);
+        response = await serverWrapped.put(`${API_URL}/${id}`).send(newUserDto);
       });
 
       it(`Response status ${ResponseStatus.OK}`, async () => {
@@ -119,7 +121,7 @@ describe('User router', () => {
         hobbies: ['hobby1', 'hobby2'],
       };
 
-      createdUserResponse = await serverWrapped.post('/users').send(createUserDto);
+      createdUserResponse = await serverWrapped.post(API_URL).send(createUserDto);
     });
 
     it(`Response status ${ResponseStatus.CREATED}`, () => {
@@ -128,7 +130,7 @@ describe('User router', () => {
 
     it(`Created user exists in database`, async () => {
       const createdUserId = createdUserResponse.body.id;
-      const response = await serverWrapped.get(`/users/${createdUserId}`);
+      const response = await serverWrapped.get(`${API_URL}/${createdUserId}`);
 
       expect(response.body).toBeTruthy();
     });

@@ -14,7 +14,7 @@
 
   1. npm run start:dev
 
-     By default, it will run on `http://localhost:4000/users`.
+     By default, it will run on `http://localhost:4000/api/users`.
 
      This command will build the application using `webpack` to the `dist/index.cjs` file and run it.
 
