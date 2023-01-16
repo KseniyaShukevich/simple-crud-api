@@ -1,5 +1,6 @@
 import http, { Server } from 'http';
 import EventEmitter from 'events';
+import { validate } from 'uuid';
 
 import Router from './Router';
 import { getRouteMask } from './helpers';
@@ -8,6 +9,7 @@ import Middleware from './middlewares/middlewareType';
 import RequestType from './http/RequestType';
 import ServerResponseType from './http/ServerResponseType';
 import { EndpointType } from './EndpointType';
+import { InvalidIdError, RouteNotMatchedError } from './errors/ErrorType';
 
 class Application {
   emitter: EventEmitter;
@@ -55,11 +57,32 @@ class Application {
     }
   }
 
+  private addRouteController(req: RequestType, res: ServerResponseType) {
+    req.on('end', () => {
+      const routeMask = getRouteMask(req.url, req.method);
+      const emitted = this.emitter.emit(routeMask, req, res);
+
+      if (!emitted) {
+        throw new RouteNotMatchedError();
+      }
+
+      if (req.id) {
+        const isIdValid = validate(req.id);
+
+        if (!isIdValid) {
+          throw new InvalidIdError();
+        }
+      }
+    });
+  }
+
   private createServer() {
     const server = http.createServer((req, res) => {
       this.middlewares.forEach(
         (middleware) => middleware(req as RequestType, res as ServerResponseType),
       );
+
+      this.addRouteController(req as RequestType, res as ServerResponseType);
     });
 
     return server;
