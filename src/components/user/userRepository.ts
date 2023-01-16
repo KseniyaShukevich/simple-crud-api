@@ -36,7 +36,13 @@ class UserRepository {
     return user;
   }
 
-  public async update(id: string, userDtoUpdated: UserDtoType): Promise<User> {
+  public async update(id: string, userDtoUpdated: UserDtoType): Promise<User | undefined> {
+    const findedUser = await this.database.findBy('id', id);
+
+    if (!findedUser) {
+      return undefined;
+    }
+
     const userUpdated = new User(
       id,
       userDtoUpdated.username,
@@ -48,8 +54,10 @@ class UserRepository {
     return user;
   }
 
-  public async delete(id: string): Promise<void> {
-    await this.database.remove('id', id);
+  public async delete(id: string): Promise<User | undefined> {
+    const user = await this.database.remove('id', id);
+
+    return user;
   }
 }
 

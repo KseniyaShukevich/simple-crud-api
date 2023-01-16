@@ -3,7 +3,7 @@ import ServerResponseType from '../../framework/http/ServerResponseType';
 import userRepository from './userRepository';
 import ResponseStatus from '../../framework/http/ResponseStatus';
 import getValidationUserMessages from './userValidator';
-import { BadRequestError } from '../../framework/middlewares/errors/ErrorType';
+import { BadRequestError, NotFoundError } from '../../framework/middlewares/errors/ErrorType';
 
 const getUsers = async (req: RequestType, res: ServerResponseType) => {
   const users = await userRepository.getAll();
@@ -13,6 +13,10 @@ const getUsers = async (req: RequestType, res: ServerResponseType) => {
 
 const getUserById = async (req: RequestType, res: ServerResponseType) => {
   const user = await userRepository.findById(req.id);
+
+  if (!user) {
+    throw new NotFoundError();
+  }
 
   res.send(ResponseStatus.OK, user);
 };
@@ -42,11 +46,19 @@ const updateUser = async (req: RequestType, res: ServerResponseType) => {
 
   const user = await userRepository.update(req.id, req.body);
 
+  if (!user) {
+    throw new NotFoundError();
+  }
+
   res.send(ResponseStatus.OK, user);
 };
 
 const deleteUser = async (req: RequestType, res: ServerResponseType) => {
-  await userRepository.delete(req.id);
+  const user = await userRepository.delete(req.id);
+
+  if (!user) {
+    throw new NotFoundError();
+  }
 
   res.send(ResponseStatus.DELETED, 'DELETE');
 };

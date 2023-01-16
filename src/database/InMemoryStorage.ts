@@ -15,7 +15,13 @@ class InMemoryStorage<T> {
     this.items.push(item);
   }
 
-  public async update(key: keyof T, value: any, updatedItem: T): Promise<T> {
+  public async update(key: keyof T, value: any, updatedItem: T): Promise<T | undefined> {
+    const findedItem = this.items.find((item) => item[key] === value);
+
+    if (!findedItem) {
+      return undefined;
+    }
+
     const newItems = this.items.map((item) => {
       if (item[key] === value) {
         return updatedItem;
@@ -29,10 +35,16 @@ class InMemoryStorage<T> {
     return updatedItem;
   }
 
-  public async remove(key: keyof T, value: any): Promise<void> {
-    const newItems = this.items.filter((item) => item[key] !== value);
+  public async remove(key: keyof T, value: any): Promise<T | undefined> {
+    const findedItem = this.items.find((item) => item[key] === value);
 
-    this.items = newItems;
+    if (findedItem) {
+      const newItems = this.items.filter((item) => item[key] !== value);
+
+      this.items = newItems;
+    }
+
+    return findedItem;
   }
 }
 
