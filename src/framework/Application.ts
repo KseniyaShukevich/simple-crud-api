@@ -8,7 +8,7 @@ import Middleware from './middlewares/middlewareType';
 import RequestType from './http/RequestType';
 import ServerResponseType from './http/ServerResponseType';
 import { EndpointType } from './EndpointType';
-import { RouteNotMatchedError } from './middlewares/errors/ErrorType';
+import { RouteNotMatchedError } from './errors/ErrorType';
 
 class Application {
   emitter: EventEmitter;

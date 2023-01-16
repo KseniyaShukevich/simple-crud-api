@@ -43,14 +43,15 @@ const getFiledsTypeMessages = (body: UserDtoType, fields: Array<FieldType>): Arr
   keys.forEach((key) => {
     const value = body[key as keyof UserDtoType];
     const valueType = typeof value;
-    const schemaType = fields.find((field) => field.name === key)?.type;
+    const schemaField = fields.find((field) => field.name === key);
+    const schemaType = schemaField?.type;
     const isSchemaTypeArray = schemaType === 'array';
     const isCurrentValueTypeArray = Array.isArray(value);
 
     const isNotArrayTypesMatched = valueType === schemaType;
     const isArrayTypeMatched = isSchemaTypeArray && isCurrentValueTypeArray;
 
-    if (!isNotArrayTypesMatched && !isArrayTypeMatched) {
+    if (!isNotArrayTypesMatched && !isArrayTypeMatched && schemaField) {
       const message = `Field ${key} must be ${schemaType} type.`;
 
       messages.push(message);

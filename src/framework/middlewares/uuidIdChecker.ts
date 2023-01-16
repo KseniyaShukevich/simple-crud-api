@@ -1,7 +1,7 @@
 import { validate } from 'uuid';
 
 import RequestType from '../http/RequestType';
-import { InvalidIdError } from './errors/ErrorType';
+import { InvalidIdError } from '../errors/ErrorType';
 
 const uuidIdChecker = (req: RequestType) => {
   const { id } = req;

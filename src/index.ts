@@ -6,7 +6,7 @@ import jsonParser from './framework/middlewares/jsonParser';
 import bodyParser from './framework/middlewares/bodyParser';
 import urlParser from './framework/middlewares/urlParser';
 import uuidIdChecker from './framework/middlewares/uuidIdChecker';
-import { handleExceptionError } from './framework/middlewares/errors/handleErrors';
+import { handleExceptionError } from './framework/errors/handleErrors';
 
 dotenv.config();
 
