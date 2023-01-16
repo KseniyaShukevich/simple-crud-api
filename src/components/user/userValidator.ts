@@ -43,7 +43,7 @@ const getValidationTypeMessageForChildren = (
 ): string | undefined => {
   let message;
 
-  for (let i = 0; i <= value.length; i += 1) {
+  for (let i = 0; i < value.length; i += 1) {
     const itemType = typeof value[i];
     const expectedType = schemaField?.childrenType;
 
