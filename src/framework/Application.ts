@@ -36,9 +36,11 @@ class Application {
     Object.keys(router.endpoints).forEach((path) => {
       const endpoint = router.endpoints[path];
 
-      Object.keys(endpoint).forEach((method) => {
-        this.addEmitterForMethod(endpoint, path, method as RequestMethods);
-      });
+      if (endpoint) {
+        Object.keys(endpoint).forEach((method) => {
+          this.addEmitterForMethod(endpoint, path, method as RequestMethods);
+        });
+      }
     });
   }
 
@@ -74,6 +76,10 @@ class Application {
         }
       }
     });
+  }
+
+  public close() {
+    this.server.close();
   }
 
   private createServer() {

@@ -21,13 +21,13 @@ class Router {
       this.endpoints[path] = {};
     }
 
-    const currentMethod = this.endpoints[path][method];
+    const currentMethod = this.endpoints[path]![method];
 
     if (currentMethod) {
       throw new Error(`Method ${method} already exists in path ${path}`);
     }
 
-    this.endpoints[path][method] = handler;
+    this.endpoints[path]![method] = handler;
   }
 
   get(path: string, handler: (req: RequestType, res: ServerResponseType) => void) {

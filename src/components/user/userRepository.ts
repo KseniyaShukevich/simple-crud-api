@@ -59,6 +59,10 @@ class UserRepository {
 
     return user;
   }
+
+  public async clear() {
+    await this.database.clear();
+  }
 }
 
 const userRepository = new UserRepository();

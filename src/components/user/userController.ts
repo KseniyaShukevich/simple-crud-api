@@ -6,14 +6,14 @@ import getValidationUserMessages from './userValidator';
 import { BadRequestError, NotFoundError } from '../../framework/errors/ErrorType';
 import ErrorMessages from '../../framework/errors/ErrorMessages';
 
-const getUsers = async (req: RequestType, res: ServerResponseType) => {
+const getUsers = async (_req: RequestType, res: ServerResponseType) => {
   const users = await userRepository.getAll();
 
   res.send(ResponseStatus.OK, users);
 };
 
 const getUserById = async (req: RequestType, res: ServerResponseType) => {
-  const user = await userRepository.findById(req.id);
+  const user = await userRepository.findById(req.id || '');
 
   if (!user) {
     throw new NotFoundError(ErrorMessages.NOT_FOUND_USER);
@@ -43,7 +43,7 @@ const updateUser = async (req: RequestType, res: ServerResponseType) => {
     throw new BadRequestError(validationMessages);
   }
 
-  const user = await userRepository.update(req.id, req.body);
+  const user = await userRepository.update(req.id || '', req.body);
 
   if (!user) {
     throw new NotFoundError(ErrorMessages.NOT_FOUND_USER);
@@ -53,7 +53,7 @@ const updateUser = async (req: RequestType, res: ServerResponseType) => {
 };
 
 const deleteUser = async (req: RequestType, res: ServerResponseType) => {
-  const user = await userRepository.delete(req.id);
+  const user = await userRepository.delete(req.id || '');
 
   if (!user) {
     throw new NotFoundError(ErrorMessages.NOT_FOUND_USER);

@@ -9,7 +9,7 @@ import {
 } from './ErrorType';
 import ErrorMessages from './errorMessages';
 
-const handleExceptionError = (req: RequestType, res: ServerResponseType) => {
+const handleExceptionError = (_req: RequestType, res: ServerResponseType) => {
   process.removeAllListeners();
   process.on('uncaughtException', (err) => {
     if (err instanceof InvalidIdError) {

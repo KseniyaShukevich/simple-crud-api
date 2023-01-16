@@ -46,6 +46,10 @@ class InMemoryStorage<T> {
 
     return findedItem;
   }
+
+  public async clear() {
+    this.items = [];
+  }
 }
 
 export default InMemoryStorage;

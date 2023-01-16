@@ -9,7 +9,7 @@ import { handleExceptionError } from './framework/errors/handleErrors';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const app = new Application();
 
@@ -23,3 +23,5 @@ app.addRouter(userRouter);
 app.listen(Number(PORT), () => {
   console.log(`Server started on PORT ${PORT}`);
 });
+
+export default app;

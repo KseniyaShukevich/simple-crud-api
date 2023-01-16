@@ -2,7 +2,7 @@ import { IncomingMessage } from 'http';
 
 interface RequestType extends IncomingMessage {
   body: any;
-  id: string;
+  id: string | undefined;
 }
 
 export default RequestType;

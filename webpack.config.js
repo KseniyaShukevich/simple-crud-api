@@ -12,7 +12,7 @@ export default {
         exclude: [
             '/node_modules/',
             '/dist/',
-            // '/__tests__/',
+            '/__tests__/',
         ],
       },
     ],
