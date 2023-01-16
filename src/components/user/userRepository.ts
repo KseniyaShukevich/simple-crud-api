@@ -1,5 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import InMemoryStorage from '../../database/InMemoryStorage';
-import User from './User';
+import User from './model/User';
+import UserDtoType from './UserDtoType';
 
 class UserRepository {
   private database: InMemoryStorage<User>;
@@ -8,7 +11,14 @@ class UserRepository {
     this.database = new InMemoryStorage();
   }
 
-  public async create(user: User): Promise<User> {
+  public async create(userDto: UserDtoType): Promise<User> {
+    const user = new User(
+      uuidv4(),
+      userDto.username,
+      userDto.age,
+      userDto.hobbies,
+    );
+
     await this.database.add(user);
 
     return user;
@@ -26,7 +36,13 @@ class UserRepository {
     return user;
   }
 
-  public async update(id: string, userUpdated: User): Promise<User> {
+  public async update(id: string, userDtoUpdated: UserDtoType): Promise<User> {
+    const userUpdated = new User(
+      id,
+      userDtoUpdated.username,
+      userDtoUpdated.age,
+      userDtoUpdated.hobbies,
+    );
     const user = await this.database.update('id', id, userUpdated);
 
     return user;
