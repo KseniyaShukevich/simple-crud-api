@@ -12,8 +12,6 @@ import ErrorMessages from './errorMessages';
 const handleExceptionError = (req: RequestType, res: ServerResponseType) => {
   process.removeAllListeners();
   process.on('uncaughtException', (err) => {
-    console.log(err);
-
     if (err instanceof InvalidIdError) {
       res.send(ResponseStatus.BAD_REQUEST, { message: ErrorMessages.INVALID_ID });
 
@@ -45,6 +43,7 @@ const handleExceptionError = (req: RequestType, res: ServerResponseType) => {
       return;
     }
 
+    console.log(err);
     res.send(ResponseStatus.SERVER_ERROR, { message: ErrorMessages.SERVER_ERROR });
   });
 };

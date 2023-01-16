@@ -8,7 +8,6 @@ import Middleware from './middlewares/middlewareType';
 import RequestType from './http/RequestType';
 import ServerResponseType from './http/ServerResponseType';
 import { EndpointType } from './EndpointType';
-import { RouteNotMatchedError } from './errors/ErrorType';
 
 class Application {
   emitter: EventEmitter;
@@ -58,19 +57,9 @@ class Application {
 
   private createServer() {
     const server = http.createServer((req, res) => {
-      const routeMask = getRouteMask(req.url, req.method);
-
       this.middlewares.forEach(
         (middleware) => middleware(req as RequestType, res as ServerResponseType),
       );
-
-      req.on('end', () => {
-        const emitted = this.emitter.emit(routeMask, req, res);
-
-        if (!emitted) {
-          throw new RouteNotMatchedError();
-        }
-      });
     });
 
     return server;

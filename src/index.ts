@@ -5,7 +5,7 @@ import userRouter from './components/user/userRouter';
 import jsonParser from './framework/middlewares/jsonParser';
 import bodyParser from './framework/middlewares/bodyParser';
 import urlParser from './framework/middlewares/urlParser';
-import uuidIdChecker from './framework/middlewares/uuidIdChecker';
+import routeController from './framework/middlewares/routeController';
 import { handleExceptionError } from './framework/errors/handleErrors';
 
 dotenv.config();
@@ -17,7 +17,7 @@ const app = new Application();
 app.use(jsonParser);
 app.use(bodyParser);
 app.use(urlParser);
-app.use(uuidIdChecker);
+app.use(routeController(app.emitter));
 app.use(handleExceptionError);
 
 app.addRouter(userRouter);
