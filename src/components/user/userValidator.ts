@@ -16,7 +16,7 @@ const getTrimedBody = (body: UserDtoType): UserDtoType => {
   return trimedBody;
 };
 
-const getRequiredFieldsMessages = (
+const getValidationRequiredMessages = (
   body: UserDtoType,
   requiredFileds: Array<FieldType>,
 ): Array<string> => {
@@ -36,7 +36,27 @@ const getRequiredFieldsMessages = (
   return messages;
 };
 
-const getFiledsTypeMessages = (body: UserDtoType, fields: Array<FieldType>): Array<string> => {
+const getValidationTypeMessageForChildren = (
+  key: string,
+  value: any,
+  schemaField: FieldType | undefined,
+): string | undefined => {
+  let message;
+
+  for (let i = 0; i <= value.length; i += 1) {
+    const itemType = typeof value[i];
+    const expectedType = schemaField?.childrenType;
+
+    if (itemType !== expectedType) {
+      message = `Field ${key} should contain only ${expectedType} type items.`;
+      break;
+    }
+  }
+
+  return message;
+};
+
+const getValidationTypeMessages = (body: UserDtoType, fields: Array<FieldType>): Array<string> => {
   const keys = Object.keys(body);
   const messages: Array<string> = [];
 
@@ -56,6 +76,14 @@ const getFiledsTypeMessages = (body: UserDtoType, fields: Array<FieldType>): Arr
 
       messages.push(message);
     }
+
+    if (isArrayTypeMatched) {
+      const message = getValidationTypeMessageForChildren(key, value, schemaField);
+
+      if (message) {
+        messages.push(message);
+      }
+    }
   });
 
   return messages;
@@ -64,8 +92,8 @@ const getFiledsTypeMessages = (body: UserDtoType, fields: Array<FieldType>): Arr
 const getValidationUserMessages = (body: UserDtoType) => {
   const trimedBody = getTrimedBody(body);
   const requiredFileds = USER_SCHEMA.filter((field) => field.required);
-  const requiredMessages = getRequiredFieldsMessages(trimedBody, requiredFileds);
-  const typesMessages = getFiledsTypeMessages(trimedBody, USER_SCHEMA);
+  const requiredMessages = getValidationRequiredMessages(trimedBody, requiredFileds);
+  const typesMessages = getValidationTypeMessages(trimedBody, USER_SCHEMA);
 
   const validationMessages = [...requiredMessages, ...typesMessages];
 

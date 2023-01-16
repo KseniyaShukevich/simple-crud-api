@@ -1,6 +1,7 @@
 interface FieldType {
   name: string;
   type: string;
+  childrenType?: string;
   required: boolean;
 }
 
@@ -18,6 +19,7 @@ const USER_SCHEMA = [
   {
     name: 'hobbies',
     type: 'array',
+    childrenType: 'string',
     required: true,
   },
 ];
