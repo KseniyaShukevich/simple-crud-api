@@ -1,12 +1,23 @@
 import RequestType from '../../http/RequestType';
 import ResponseStatus from '../../http/ResponseStatus';
 import ServerResponseType from '../../http/ServerResponseType';
-import { BadRequestError, NotFoundError, RouteNotMatchedError } from './ErrorType';
+import {
+  BadRequestError,
+  InvalidIdError,
+  NotFoundError,
+  RouteNotMatchedError,
+} from './ErrorType';
 
 const handleExceptionError = (req: RequestType, res: ServerResponseType) => {
   process.removeAllListeners();
   process.on('uncaughtException', (err) => {
     console.log(err);
+
+    if (err instanceof InvalidIdError) {
+      res.send(ResponseStatus.BAD_REQUEST, { message: 'Invalid id.' });
+
+      return;
+    }
 
     if (err instanceof BadRequestError) {
       res.send(ResponseStatus.BAD_REQUEST, { message: 'Invalid data.' });
