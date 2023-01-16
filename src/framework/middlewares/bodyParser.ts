@@ -1,4 +1,4 @@
-import RequestType from '../RequestType';
+import RequestType from '../http/RequestType';
 
 const bodyParser = (req: RequestType) => {
   let body = '';

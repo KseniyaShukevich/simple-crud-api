@@ -1,5 +1,5 @@
-import ServerResponseType from '../ServerResponseType';
-import RequestType from '../RequestType';
+import ServerResponseType from '../http/ServerResponseType';
+import RequestType from '../http/RequestType';
 
 type Middleware = (req: RequestType, res: ServerResponseType) => void;
 

@@ -1,35 +1,36 @@
-import RequestType from '../../framework/RequestType';
-import ServerResponseType from '../../framework/ServerResponseType';
+import RequestType from '../../framework/http/RequestType';
+import ServerResponseType from '../../framework/http/ServerResponseType';
 import userRepository from './userRepository';
+import ResponseStatus from '../../framework/http/ResponseStatus';
 
 const getUsers = async (req: RequestType, res: ServerResponseType) => {
   const users = await userRepository.getAll();
 
-  res.send(200, users);
+  res.send(ResponseStatus.OK, users);
 };
 
 const getUserById = async (req: RequestType, res: ServerResponseType) => {
   const user = await userRepository.findById(req.id);
 
-  res.send(200, user);
+  res.send(ResponseStatus.OK, user);
 };
 
 const createUser = async (req: RequestType, res: ServerResponseType) => {
   const user = await userRepository.create(req.body);
 
-  res.send(201, user);
+  res.send(ResponseStatus.CREATED, user);
 };
 
 const updateUser = async (req: RequestType, res: ServerResponseType) => {
   const user = await userRepository.update(req.id, req.body);
 
-  res.send(200, user);
+  res.send(ResponseStatus.OK, user);
 };
 
 const deleteUser = async (req: RequestType, res: ServerResponseType) => {
   await userRepository.delete(req.id);
 
-  res.send(204, 'DELETE');
+  res.send(ResponseStatus.DELETED, 'DELETE');
 };
 
 export {

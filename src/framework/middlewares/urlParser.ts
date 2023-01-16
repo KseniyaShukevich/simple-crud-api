@@ -1,4 +1,4 @@
-import RequestType from '../RequestType';
+import RequestType from '../http/RequestType';
 
 const urlParser = (req: RequestType) => {
   const parsedUrl = req.url?.split('/');

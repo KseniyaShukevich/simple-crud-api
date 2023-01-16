@@ -3,12 +3,12 @@ import EventEmitter from 'events';
 
 import Router from './Router';
 import { getRouteMask } from './helpers';
-import RequestMethods from './requestMethods';
+import RequestMethods from './http/RequestMethods';
 import Middleware from './middlewares/middlewareType';
-import RequestType from './RequestType';
-import ServerResponseType from './ServerResponseType';
+import RequestType from './http/RequestType';
+import ServerResponseType from './http/ServerResponseType';
 import { EndpointType } from './EndpointType';
-import { handleUncaughtException } from './errors/handleErrors';
+import { RouteNotMatchedError } from './middlewares/errors/ErrorType';
 
 class Application {
   emitter: EventEmitter;
@@ -68,11 +68,9 @@ class Application {
         const emitted = this.emitter.emit(routeMask, req, res);
 
         if (!emitted) {
-          (res as ServerResponseType).send(404, "This router doesn't exist.");
+          throw new RouteNotMatchedError();
         }
       });
-
-      handleUncaughtException(res as ServerResponseType);
     });
 
     return server;

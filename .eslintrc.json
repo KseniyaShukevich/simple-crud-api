@@ -17,6 +17,7 @@
     "rules": {
         "no-console": "warn",
         "linebreak-style": ["error", "windows"],
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "max-classes-per-file": "off"
     }
 }

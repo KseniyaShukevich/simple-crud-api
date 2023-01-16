@@ -1,4 +1,4 @@
-import RequestMethods from './requestMethods';
+import RequestMethods from './http/RequestMethods';
 
 const getRouteMask = (path?: string, method?: RequestMethods | string): string => {
   const parsedUrl = path?.split('/');
